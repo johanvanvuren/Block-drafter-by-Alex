@@ -1,0 +1,316 @@
+{
+  "schema_version": "1.0",
+  "block_id": "basic_skirt_block",
+  "name": "Basic Skirt Block (Back & Front)",
+  "description": "Classic tailored metric skirt sloper with shaped side-hip curves, back and front waist darts, hip balance lines, grainlines, and notches.",
+  "unit": "cm",
+  "coordinate_system": "y_down",
+  "required_measurements": [
+    { "key": "waist", "label": "Waist Circumference", "default_cm": 66.0, "min_cm": 54.0, "max_cm": 125.0 },
+    { "key": "hips", "label": "Hip Circumference", "default_cm": 90.0, "min_cm": 80.0, "max_cm": 150.0 },
+    { "key": "waist_to_hip", "label": "Waist to Hip Depth", "default_cm": 20.3, "min_cm": 18.0, "max_cm": 24.0 },
+    { "key": "skirt_length", "label": "Waist to Hem Length", "default_cm": 59.0, "min_cm": 40.0, "max_cm": 90.0 }
+  ],
+  "derived_variables": {
+    "hip_ease": "1.5cm",
+    "half_hip_block": "hips / 2 + hip_ease",
+    "back_hip_width": "hips / 4 + 0.5cm",
+    "back_dart_intake": "3.5cm",
+    "front_dart_intake": "2.5cm",
+    "back_waist_span": "waist / 4 + back_dart_intake + 0.25cm",
+    "front_waist_span": "waist / 4 + front_dart_intake + 0.25cm",
+    "side_waist_rise": "1.25cm"
+  },
+  "points": [
+    {
+      "id": "A",
+      "label": "CB Waist Origin",
+      "type": "absolute",
+      "x": "0",
+      "y": "0"
+    },
+    {
+      "id": "B",
+      "label": "CF Waist Ref",
+      "type": "offset",
+      "from": "A",
+      "dx": "half_hip_block + 8cm",
+      "dy": "0"
+    },
+    {
+      "id": "C",
+      "label": "CB Hem",
+      "type": "offset",
+      "from": "A",
+      "dx": "0",
+      "dy": "skirt_length"
+    },
+    {
+      "id": "D",
+      "label": "CF Hem",
+      "type": "coord_ref",
+      "x": "B.x",
+      "y": "C.y"
+    },
+    {
+      "id": "E",
+      "label": "CB Hip Level",
+      "type": "offset",
+      "from": "A",
+      "dx": "0",
+      "dy": "waist_to_hip"
+    },
+    {
+      "id": "F",
+      "label": "CF Hip Level",
+      "type": "coord_ref",
+      "x": "B.x",
+      "y": "E.y"
+    },
+    {
+      "id": "H_B",
+      "label": "Back Side Hip",
+      "type": "offset",
+      "from": "E",
+      "dx": "back_hip_width",
+      "dy": "0"
+    },
+    {
+      "id": "Hem_B",
+      "label": "Back Side Hem",
+      "type": "coord_ref",
+      "x": "H_B.x",
+      "y": "C.y"
+    },
+    {
+      "id": "W_B",
+      "label": "Back Side Waist",
+      "type": "offset",
+      "from": "A",
+      "dx": "back_waist_span",
+      "dy": "-side_waist_rise"
+    },
+    {
+      "id": "BD_M",
+      "label": "Back Dart Center",
+      "type": "line_interp",
+      "line": ["A", "W_B"],
+      "t": "0.5"
+    },
+    {
+      "id": "BD_L",
+      "label": "Back Dart Left Leg",
+      "type": "line_interp",
+      "line": ["A", "W_B"],
+      "distance": "dist(A, BD_M) - back_dart_intake / 2"
+    },
+    {
+      "id": "BD_R",
+      "label": "Back Dart Right Leg",
+      "type": "line_interp",
+      "line": ["A", "W_B"],
+      "distance": "dist(A, BD_M) + back_dart_intake / 2"
+    },
+    {
+      "id": "BD_Apex",
+      "label": "Back Dart Apex",
+      "type": "offset",
+      "from": "BD_M",
+      "dx": "0",
+      "dy": "14.0cm"
+    },
+    {
+      "id": "H_F",
+      "label": "Front Side Hip",
+      "type": "offset",
+      "from": "F",
+      "dx": "-(half_hip_block - back_hip_width)",
+      "dy": "0"
+    },
+    {
+      "id": "Hem_F",
+      "label": "Front Side Hem",
+      "type": "coord_ref",
+      "x": "H_F.x",
+      "y": "D.y"
+    },
+    {
+      "id": "W_F",
+      "label": "Front Side Waist",
+      "type": "offset",
+      "from": "B",
+      "dx": "-front_waist_span",
+      "dy": "-side_waist_rise"
+    },
+    {
+      "id": "FD_M",
+      "label": "Front Dart Center",
+      "type": "line_interp",
+      "line": ["B", "W_F"],
+      "t": "0.55"
+    },
+    {
+      "id": "FD_R",
+      "label": "Front Dart Right Leg",
+      "type": "line_interp",
+      "line": ["B", "W_F"],
+      "distance": "dist(B, FD_M) - front_dart_intake / 2"
+    },
+    {
+      "id": "FD_L",
+      "label": "Front Dart Left Leg",
+      "type": "line_interp",
+      "line": ["B", "W_F"],
+      "distance": "dist(B, FD_M) + front_dart_intake / 2"
+    },
+    {
+      "id": "FD_Apex",
+      "label": "Front Dart Apex",
+      "type": "offset",
+      "from": "FD_M",
+      "dx": "0",
+      "dy": "10.5cm"
+    },
+    {
+      "id": "BG_Top",
+      "label": "Back Grain Top",
+      "type": "offset",
+      "from": "E",
+      "dx": "back_hip_width * 0.45",
+      "dy": "-6cm"
+    },
+    {
+      "id": "BG_Bot",
+      "label": "Back Grain Bottom",
+      "type": "offset",
+      "from": "BG_Top",
+      "dx": "0",
+      "dy": "32cm"
+    },
+    {
+      "id": "FG_Top",
+      "label": "Front Grain Top",
+      "type": "offset",
+      "from": "F",
+      "dx": "-back_hip_width * 0.45",
+      "dy": "-6cm"
+    },
+    {
+      "id": "FG_Bot",
+      "label": "Front Grain Bottom",
+      "type": "offset",
+      "from": "FG_Top",
+      "dx": "0",
+      "dy": "32cm"
+    }
+  ],
+  "construction": [
+    { "id": "cb_line", "label": "Centre Back", "type": "line", "from": "A", "to": "C" },
+    { "id": "cf_line", "label": "Centre Front", "type": "line", "from": "B", "to": "D" },
+    { "id": "back_hip_guide", "label": "Back Hip Level", "type": "line", "from": "E", "to": "H_B" },
+    { "id": "front_hip_guide", "label": "Front Hip Level", "type": "line", "from": "H_F", "to": "F" },
+    {
+      "id": "back_hip_curve",
+      "label": "Back Hip Curve",
+      "type": "cubic_bezier",
+      "p0": "W_B",
+      "p3": "H_B",
+      "handle1_angle": "78",
+      "handle1_length": "dist(W_B, H_B) * 0.38",
+      "handle2_angle": "-90",
+      "handle2_length": "dist(W_B, H_B) * 0.38"
+    },
+    {
+      "id": "front_hip_curve",
+      "label": "Front Hip Curve",
+      "type": "cubic_bezier",
+      "p0": "W_F",
+      "p3": "H_F",
+      "handle1_angle": "102",
+      "handle1_length": "dist(W_F, H_F) * 0.38",
+      "handle2_angle": "-90",
+      "handle2_length": "dist(W_F, H_F) * 0.38"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "skirt_back",
+      "name": "Skirt Back Block",
+      "cut_count": 2,
+      "seam_allowance_cm": 1.0,
+      "grainline": {
+        "from": "BG_Top",
+        "to": "BG_Bot",
+        "label": "BACK GRAINLINE (CB PARALLEL)"
+      },
+      "boundary": [
+        { "type": "line", "from": "A", "to": "BD_L" },
+        { "type": "line", "from": "BD_L", "to": "BD_R" },
+        { "type": "line", "from": "BD_R", "to": "W_B" },
+        { "type": "curve_ref", "curve_id": "back_hip_curve", "reverse": false },
+        { "type": "line", "from": "H_B", "to": "Hem_B" },
+        { "type": "line", "from": "Hem_B", "to": "C" },
+        { "type": "line", "from": "C", "to": "A" }
+      ],
+      "internal_lines": [
+        {
+          "id": "back_waist_dart",
+          "label": "Back Waist Dart",
+          "type": "dart",
+          "points": ["BD_L", "BD_Apex", "BD_R"]
+        },
+        {
+          "id": "back_hip_line",
+          "label": "Hip Line",
+          "type": "internal",
+          "points": ["E", "H_B"]
+        }
+      ],
+      "notches": [
+        { "id": "nb_hip_side", "point": "H_B", "edge_from": "H_B", "edge_to": "Hem_B", "count": 2 },
+        { "id": "nb_hip_cb", "point": "E", "edge_from": "C", "edge_to": "A", "count": 1 },
+        { "id": "nb_dart_l", "point": "BD_L", "edge_from": "A", "edge_to": "BD_L", "count": 1 },
+        { "id": "nb_dart_r", "point": "BD_R", "edge_from": "BD_R", "edge_to": "W_B", "count": 1 }
+      ]
+    },
+    {
+      "id": "skirt_front",
+      "name": "Skirt Front Block",
+      "cut_count": 1,
+      "seam_allowance_cm": 1.0,
+      "grainline": {
+        "from": "FG_Top",
+        "to": "FG_Bot",
+        "label": "FRONT GRAINLINE (CF FOLD)"
+      },
+      "boundary": [
+        { "type": "line", "from": "B", "to": "D" },
+        { "type": "line", "from": "D", "to": "Hem_F" },
+        { "type": "line", "from": "Hem_F", "to": "H_F" },
+        { "type": "curve_ref", "curve_id": "front_hip_curve", "reverse": true },
+        { "type": "line", "from": "W_F", "to": "FD_L" },
+        { "type": "line", "from": "FD_L", "to": "FD_R" },
+        { "type": "line", "from": "FD_R", "to": "B" }
+      ],
+      "internal_lines": [
+        {
+          "id": "front_waist_dart",
+          "label": "Front Waist Dart",
+          "type": "dart",
+          "points": ["FD_L", "FD_Apex", "FD_R"]
+        },
+        {
+          "id": "front_hip_line",
+          "label": "Hip Line",
+          "type": "internal",
+          "points": ["H_F", "F"]
+        }
+      ],
+      "notches": [
+        { "id": "nf_hip_side", "point": "H_F", "edge_from": "Hem_F", "edge_to": "H_F", "count": 1 },
+        { "id": "nf_dart_l", "point": "FD_L", "edge_from": "W_F", "edge_to": "FD_L", "count": 1 },
+        { "id": "nf_dart_r", "point": "FD_R", "edge_from": "FD_R", "edge_to": "B", "count": 1 }
+      ]
+    }
+  ]
+}

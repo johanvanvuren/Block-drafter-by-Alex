@@ -1,0 +1,82 @@
+name: Build Desktop Executables (macOS & Windows)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build-macos:
+    name: Build macOS App (.app / .zip)
+    runs-on: macos-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Compile macOS Application Bundle with PyInstaller
+        run: |
+          pyinstaller \
+            --name "BlockDrafter" \
+            --windowed \
+            --noconfirm \
+            --clean \
+            --add-data "data:data" \
+            main.py
+
+      - name: Compress macOS .app bundle into ZIP
+        run: |
+          cd dist
+          zip -r -y "BlockDrafter-macOS.zip" "BlockDrafter.app"
+
+      - name: Upload macOS Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BlockDrafter-macOS
+          path: dist/BlockDrafter-macOS.zip
+          retention-days: 14
+
+  build-windows:
+    name: Build Windows Executable (.exe)
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Compile Windows Executable with PyInstaller
+        run: |
+          pyinstaller --name "BlockDrafter" --onedir --windowed --noconfirm --clean --add-data "data;data" main.py
+
+      - name: Compress Windows Distribution Folder into ZIP
+        run: |
+          Compress-Archive -Path "dist\BlockDrafter" -DestinationPath "dist\BlockDrafter-Windows.zip"
+
+      - name: Upload Windows Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BlockDrafter-Windows
+          path: dist/BlockDrafter-Windows.zip
+          retention-days: 14

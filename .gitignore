@@ -1,0 +1,28 @@
+# Virtual Environments (DO NOT commit - machine and OS specific)
+.venv/
+venv/
+env/
+ENV/
+
+# Python byte-code & caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# PyInstaller / Build outputs
+build/
+dist/
+*.spec
+*.exe
+*.dmg
+*.app/
+
+# Sample / Generated local exports
+exports/
+
+# OS & Editor files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

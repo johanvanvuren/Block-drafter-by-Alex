@@ -1,0 +1,220 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://blockdrafter.local/schemas/block_instruction.schema.json",
+  "title": "Garment Block Drafting Instruction Schema",
+  "description": "Two-layer parametric garment block specification: Layer 1 defines construction points, math formulas, and curves; Layer 2 extracts closed cuttable pattern pieces with darts, grainlines, notches, and seam allowances.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "block_id",
+    "name",
+    "unit",
+    "required_measurements",
+    "points",
+    "construction",
+    "pieces"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "block_id": {
+      "type": "string",
+      "description": "Unique identifier slug for the garment block."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the garment block (e.g., 'Basic Skirt Block (Front & Back)')."
+    },
+    "description": {
+      "type": "string"
+    },
+    "unit": {
+      "type": "string",
+      "enum": ["cm", "mm", "in"],
+      "default": "cm"
+    },
+    "coordinate_system": {
+      "type": "string",
+      "enum": ["y_down", "y_up"],
+      "default": "y_down",
+      "description": "Pattern drafting standard uses origin (0,0) at top-left (Nape/Waist) with X positive right and Y positive downward."
+    },
+    "required_measurements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "label", "default_cm"],
+        "properties": {
+          "key": { "type": "string" },
+          "label": { "type": "string" },
+          "default_cm": { "type": "number" },
+          "min_cm": { "type": "number" },
+          "max_cm": { "type": "number" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "derived_variables": {
+      "type": "object",
+      "description": "Ordered key-value map of intermediate mathematical formulas evaluated before points (e.g., ease, dart intake, width quarters).",
+      "additionalProperties": {
+        "type": ["string", "number"]
+      }
+    },
+    "points": {
+      "type": "array",
+      "description": "Ordered list of parametric construction points.",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": [
+              "absolute",
+              "offset",
+              "coord_ref",
+              "polar",
+              "line_interp",
+              "perpendicular",
+              "line_intersection",
+              "circle_line_intersection",
+              "circle_circle_intersection"
+            ]
+          },
+          "from": { "type": "string", "description": "Reference point ID for offset/polar." },
+          "x": { "type": ["string", "number"], "description": "X coordinate formula (for absolute or coord_ref)." },
+          "y": { "type": ["string", "number"], "description": "Y coordinate formula (for absolute or coord_ref)." },
+          "dx": { "type": ["string", "number"], "description": "Delta X formula (for offset)." },
+          "dy": { "type": ["string", "number"], "description": "Delta Y formula (for offset)." },
+          "length": { "type": ["string", "number"], "description": "Distance formula (for polar, line_interp, perpendicular)." },
+          "angle": { "type": ["string", "number"], "description": "Angle in degrees (for polar; 0=right, 90=down in y_down)." },
+          "line": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "Two point IDs [P1, P2] defining a line segment."
+          },
+          "t": { "type": ["string", "number"], "description": "Normalized ratio (0.0 to 1.0) along line [P1, P2]." },
+          "distance": { "type": ["string", "number"], "description": "Signed distance in block units along line [P1, P2] from P1." },
+          "side": { "type": "string", "enum": ["left", "right"], "default": "left" },
+          "line1": { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 2 },
+          "line2": { "type": "array", "items": { "type": "string" }, "minItems": 2, "maxItems": 2 },
+          "center": { "type": "string" },
+          "radius": { "type": ["string", "number"] },
+          "center1": { "type": "string" },
+          "radius1": { "type": ["string", "number"] },
+          "center2": { "type": "string" },
+          "radius2": { "type": ["string", "number"] },
+          "select": {
+            "type": "string",
+            "enum": ["min_x", "max_x", "min_y", "max_y", "first", "second"],
+            "default": "first"
+          }
+        }
+      }
+    },
+    "construction": {
+      "type": "array",
+      "description": "Visual construction lines, curves, and splines in Layer 1.",
+      "items": {
+        "type": "object",
+        "required": ["id", "type"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "type": {
+            "type": "string",
+            "enum": ["line", "cubic_bezier", "spline", "arc"]
+          },
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "p0": { "type": "string" },
+          "p1": { "type": "string" },
+          "p2": { "type": "string" },
+          "p3": { "type": "string" },
+          "handle1_angle": { "type": ["string", "number"] },
+          "handle1_length": { "type": ["string", "number"] },
+          "handle2_angle": { "type": ["string", "number"] },
+          "handle2_length": { "type": ["string", "number"] },
+          "points": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "pieces": {
+      "type": "array",
+      "description": "Layer 2: Closed cuttable pattern pieces extracted from the construction geometry.",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "boundary"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "cut_count": { "type": "integer", "default": 1 },
+          "seam_allowance_cm": { "type": ["string", "number"], "default": 1.0 },
+          "grainline": {
+            "type": "object",
+            "required": ["from", "to"],
+            "properties": {
+              "from": { "type": "string" },
+              "to": { "type": "string" },
+              "label": { "type": "string", "default": "GRAINLINE" }
+            }
+          },
+          "boundary": {
+            "type": "array",
+            "description": "Ordered clockwise or counter-clockwise loop of segments/curves forming a closed outline.",
+            "items": {
+              "type": "object",
+              "required": ["type"],
+              "properties": {
+                "type": { "type": "string", "enum": ["line", "curve_ref", "cubic_bezier", "spline"] },
+                "from": { "type": "string" },
+                "to": { "type": "string" },
+                "curve_id": { "type": "string" },
+                "reverse": { "type": "boolean", "default": false }
+              }
+            }
+          },
+          "internal_lines": {
+            "type": "array",
+            "description": "Darts, fold lines, bust/hip balance lines inside the piece.",
+            "items": {
+              "type": "object",
+              "required": ["id", "type", "points"],
+              "properties": {
+                "id": { "type": "string" },
+                "label": { "type": "string" },
+                "type": { "type": "string", "enum": ["dart", "internal", "fold"] },
+                "points": { "type": "array", "items": { "type": "string" } }
+              }
+            }
+          },
+          "notches": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["point"],
+              "properties": {
+                "id": { "type": "string" },
+                "point": { "type": "string" },
+                "edge_from": { "type": "string" },
+                "edge_to": { "type": "string" },
+                "length_cm": { "type": "number", "default": 0.5 },
+                "count": { "type": "integer", "default": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

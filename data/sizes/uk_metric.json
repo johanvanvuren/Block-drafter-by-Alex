@@ -1,0 +1,151 @@
+{
+  "system_id": "uk_metric_womenswear",
+  "name": "UK Standard Metric Sizing (Aldrich)",
+  "unit": "cm",
+  "measurement_definitions": {
+    "bust": {
+      "label": "Bust Circumference",
+      "min_cm": 70.0,
+      "max_cm": 140.0,
+      "description": "Horizontal circumference around fullest part of the bust."
+    },
+    "waist": {
+      "label": "Waist Circumference",
+      "min_cm": 54.0,
+      "max_cm": 125.0,
+      "description": "Natural waistline circumference."
+    },
+    "hips": {
+      "label": "Hip Circumference",
+      "min_cm": 80.0,
+      "max_cm": 150.0,
+      "description": "Horizontal circumference around fullest part of the hips."
+    },
+    "neck_size": {
+      "label": "Neck Size",
+      "min_cm": 32.0,
+      "max_cm": 46.0,
+      "description": "Base of neck circumference."
+    },
+    "nape_to_waist": {
+      "label": "Nape to Waist",
+      "min_cm": 36.0,
+      "max_cm": 46.0,
+      "description": "Centre back length from prominent cervical vertebra to natural waist."
+    },
+    "armscye_depth": {
+      "label": "Armscye (Scye) Depth",
+      "min_cm": 18.0,
+      "max_cm": 25.0,
+      "description": "Vertical depth from nape of neck to underarm level."
+    },
+    "cross_back": {
+      "label": "Half Cross Back",
+      "min_cm": 15.0,
+      "max_cm": 23.0,
+      "description": "Half back width measured across shoulder blades."
+    },
+    "cross_chest": {
+      "label": "Half Cross Chest",
+      "min_cm": 14.0,
+      "max_cm": 22.0,
+      "description": "Half chest width measured above bust."
+    },
+    "shoulder_length": {
+      "label": "Shoulder Length",
+      "min_cm": 10.5,
+      "max_cm": 15.0,
+      "description": "Side neck point to shoulder tip."
+    },
+    "dart_width": {
+      "label": "Bust Dart Width",
+      "min_cm": 5.0,
+      "max_cm": 10.0,
+      "description": "Standard shoulder bust dart intake."
+    },
+    "waist_to_hip": {
+      "label": "Waist to Hip Depth",
+      "min_cm": 18.0,
+      "max_cm": 24.0,
+      "description": "Vertical distance from natural waist line to hip line."
+    },
+    "skirt_length": {
+      "label": "Waist to Knee / Hem",
+      "min_cm": 40.0,
+      "max_cm": 90.0,
+      "description": "Vertical skirt length from natural waist to hem."
+    }
+  },
+  "sizes": {
+    "UK 8": {
+      "bust": 80.0,
+      "waist": 62.0,
+      "hips": 86.0,
+      "neck_size": 35.0,
+      "nape_to_waist": 40.4,
+      "armscye_depth": 20.2,
+      "cross_back": 16.7,
+      "cross_chest": 15.5,
+      "shoulder_length": 11.8,
+      "dart_width": 6.2,
+      "waist_to_hip": 20.0,
+      "skirt_length": 58.5
+    },
+    "UK 10": {
+      "bust": 84.0,
+      "waist": 66.0,
+      "hips": 90.0,
+      "neck_size": 36.0,
+      "nape_to_waist": 40.7,
+      "armscye_depth": 20.6,
+      "cross_back": 17.2,
+      "cross_chest": 16.0,
+      "shoulder_length": 12.0,
+      "dart_width": 6.6,
+      "waist_to_hip": 20.3,
+      "skirt_length": 59.0
+    },
+    "UK 12": {
+      "bust": 88.0,
+      "waist": 70.0,
+      "hips": 94.0,
+      "neck_size": 37.0,
+      "nape_to_waist": 41.0,
+      "armscye_depth": 21.0,
+      "cross_back": 17.7,
+      "cross_chest": 16.5,
+      "shoulder_length": 12.2,
+      "dart_width": 7.0,
+      "waist_to_hip": 20.6,
+      "skirt_length": 59.5
+    },
+    "UK 14": {
+      "bust": 92.0,
+      "waist": 74.0,
+      "hips": 98.0,
+      "neck_size": 38.0,
+      "nape_to_waist": 41.3,
+      "armscye_depth": 21.4,
+      "cross_back": 18.2,
+      "cross_chest": 17.0,
+      "shoulder_length": 12.4,
+      "dart_width": 7.4,
+      "waist_to_hip": 20.9,
+      "skirt_length": 60.0
+    },
+    "UK 16": {
+      "bust": 97.0,
+      "waist": 79.0,
+      "hips": 103.0,
+      "neck_size": 39.2,
+      "nape_to_waist": 41.6,
+      "armscye_depth": 21.9,
+      "cross_back": 18.8,
+      "cross_chest": 17.6,
+      "shoulder_length": 12.6,
+      "dart_width": 8.0,
+      "waist_to_hip": 21.2,
+      "skirt_length": 60.5
+    }
+  }
+}

@@ -1,0 +1,426 @@
+{
+  "schema_version": "1.0",
+  "block_id": "basic_bodice_block",
+  "name": "Close-Fitting Bodice Block (Back & Front)",
+  "description": "Metric women's bodice block (Aldrich system) featuring shaped necklines, shoulder slope, contoured scye/armhole Bezier curves, front bust dart, and waist suppression darts.",
+  "unit": "cm",
+  "coordinate_system": "y_down",
+  "required_measurements": [
+    { "key": "bust", "label": "Bust Circumference", "default_cm": 84.0, "min_cm": 70.0, "max_cm": 140.0 },
+    { "key": "waist", "label": "Waist Circumference", "default_cm": 66.0, "min_cm": 54.0, "max_cm": 125.0 },
+    { "key": "neck_size", "label": "Neck Circumference", "default_cm": 36.0, "min_cm": 32.0, "max_cm": 46.0 },
+    { "key": "nape_to_waist", "label": "Nape to Waist Length", "default_cm": 40.7, "min_cm": 36.0, "max_cm": 46.0 },
+    { "key": "armscye_depth", "label": "Armscye (Scye) Depth", "default_cm": 20.6, "min_cm": 18.0, "max_cm": 25.0 },
+    { "key": "cross_back", "label": "Half Cross Back", "default_cm": 17.2, "min_cm": 15.0, "max_cm": 23.0 },
+    { "key": "cross_chest", "label": "Half Cross Chest", "default_cm": 16.0, "min_cm": 14.0, "max_cm": 22.0 },
+    { "key": "shoulder_length", "label": "Shoulder Length", "default_cm": 12.0, "min_cm": 10.5, "max_cm": 15.0 },
+    { "key": "dart_width", "label": "Bust Dart Width", "default_cm": 6.6, "min_cm": 5.0, "max_cm": 10.0 }
+  ],
+  "derived_variables": {
+    "bust_ease": "4.0cm",
+    "half_bust_block": "bust / 2 + bust_ease",
+    "neck_width": "neck_size / 5 - 0.2cm",
+    "front_neck_drop": "neck_size / 5 - 0.5cm",
+    "back_bust_width": "bust / 4 + 1.5cm",
+    "front_bust_width": "bust / 4 + 2.5cm",
+    "back_waist_dart": "3.0cm",
+    "front_waist_dart": "3.2cm",
+    "back_waist_width": "waist / 4 + back_waist_dart + 0.5cm",
+    "front_waist_width": "waist / 4 + front_waist_dart + 0.5cm",
+    "piece_gap": "10.0cm"
+  },
+  "points": [
+    {
+      "id": "Nape",
+      "label": "CB Nape (Origin)",
+      "type": "absolute",
+      "x": "0",
+      "y": "1.5cm"
+    },
+    {
+      "id": "CB_Scye",
+      "label": "CB Armscye Level",
+      "type": "offset",
+      "from": "Nape",
+      "dx": "0",
+      "dy": "armscye_depth"
+    },
+    {
+      "id": "CB_Waist",
+      "label": "CB Waist",
+      "type": "offset",
+      "from": "Nape",
+      "dx": "0",
+      "dy": "nape_to_waist"
+    },
+    {
+      "id": "CB_BackLevel",
+      "label": "CB Half-Back Level",
+      "type": "line_interp",
+      "line": ["Nape", "CB_Scye"],
+      "t": "0.5"
+    },
+    {
+      "id": "BN_Side",
+      "label": "Back Side Neck",
+      "type": "offset",
+      "from": "Nape",
+      "dx": "neck_width",
+      "dy": "-1.5cm"
+    },
+    {
+      "id": "B_Sh_Tip",
+      "label": "Back Shoulder Tip",
+      "type": "polar",
+      "from": "BN_Side",
+      "length": "shoulder_length + 1.2cm",
+      "angle": "18"
+    },
+    {
+      "id": "B_Cross",
+      "label": "Cross Back Guide",
+      "type": "offset",
+      "from": "CB_BackLevel",
+      "dx": "cross_back",
+      "dy": "0"
+    },
+    {
+      "id": "B_Underarm",
+      "label": "Back Underarm Side",
+      "type": "offset",
+      "from": "CB_Scye",
+      "dx": "back_bust_width",
+      "dy": "0"
+    },
+    {
+      "id": "B_Side_Waist",
+      "label": "Back Side Waist",
+      "type": "offset",
+      "from": "CB_Waist",
+      "dx": "back_waist_width",
+      "dy": "0"
+    },
+    {
+      "id": "BWD_Mid",
+      "label": "Back Waist Dart Mid",
+      "type": "line_interp",
+      "line": ["CB_Waist", "B_Side_Waist"],
+      "t": "0.48"
+    },
+    {
+      "id": "BWD_L",
+      "label": "Back Waist Dart Left",
+      "type": "offset",
+      "from": "BWD_Mid",
+      "dx": "-back_waist_dart / 2",
+      "dy": "0"
+    },
+    {
+      "id": "BWD_R",
+      "label": "Back Waist Dart Right",
+      "type": "offset",
+      "from": "BWD_Mid",
+      "dx": "back_waist_dart / 2",
+      "dy": "0"
+    },
+    {
+      "id": "BWD_Apex",
+      "label": "Back Waist Dart Apex",
+      "type": "coord_ref",
+      "x": "BWD_Mid.x",
+      "y": "CB_Scye.y + 2.5cm"
+    },
+    {
+      "id": "CF_Top",
+      "label": "CF Neck Reference",
+      "type": "offset",
+      "from": "Nape",
+      "dx": "half_bust_block + piece_gap",
+      "dy": "-0.8cm"
+    },
+    {
+      "id": "CF_Neck",
+      "label": "CF Neckline Base",
+      "type": "offset",
+      "from": "CF_Top",
+      "dx": "0",
+      "dy": "front_neck_drop"
+    },
+    {
+      "id": "CF_Scye",
+      "label": "CF Bust/Scye Level",
+      "type": "coord_ref",
+      "x": "CF_Top.x",
+      "y": "CB_Scye.y"
+    },
+    {
+      "id": "CF_Waist",
+      "label": "CF Waist",
+      "type": "coord_ref",
+      "x": "CF_Top.x",
+      "y": "CB_Waist.y + 0.8cm"
+    },
+    {
+      "id": "FN_Side",
+      "label": "Front Side Neck",
+      "type": "offset",
+      "from": "CF_Top",
+      "dx": "-neck_width",
+      "dy": "0"
+    },
+    {
+      "id": "Bust_Point",
+      "label": "Bust Apex (BP)",
+      "type": "offset",
+      "from": "CF_Scye",
+      "dx": "-(bust / 10 + 1.2cm)",
+      "dy": "2.4cm"
+    },
+    {
+      "id": "BD_R",
+      "label": "Bust Dart Inner Leg",
+      "type": "polar",
+      "from": "FN_Side",
+      "length": "shoulder_length * 0.42",
+      "angle": "160"
+    },
+    {
+      "id": "BD_L",
+      "label": "Bust Dart Outer Leg",
+      "type": "offset",
+      "from": "BD_R",
+      "dx": "-dart_width",
+      "dy": "0.6cm"
+    },
+    {
+      "id": "F_Sh_Tip",
+      "label": "Front Shoulder Tip",
+      "type": "polar",
+      "from": "BD_L",
+      "length": "shoulder_length * 0.58",
+      "angle": "156"
+    },
+    {
+      "id": "F_Chest",
+      "label": "Front Cross Chest",
+      "type": "offset",
+      "from": "CF_Scye",
+      "dx": "-cross_chest",
+      "dy": "-5.0cm"
+    },
+    {
+      "id": "F_Underarm",
+      "label": "Front Underarm Side",
+      "type": "offset",
+      "from": "CF_Scye",
+      "dx": "-front_bust_width",
+      "dy": "0"
+    },
+    {
+      "id": "F_Side_Waist",
+      "label": "Front Side Waist",
+      "type": "offset",
+      "from": "CF_Waist",
+      "dx": "-front_waist_width",
+      "dy": "-0.8cm"
+    },
+    {
+      "id": "FWD_Mid",
+      "label": "Front Waist Dart Center",
+      "type": "coord_ref",
+      "x": "Bust_Point.x",
+      "y": "CF_Waist.y - 0.3cm"
+    },
+    {
+      "id": "FWD_R",
+      "label": "Front Waist Dart CF Side",
+      "type": "offset",
+      "from": "FWD_Mid",
+      "dx": "front_waist_dart / 2",
+      "dy": "0"
+    },
+    {
+      "id": "FWD_L",
+      "label": "Front Waist Dart Side",
+      "type": "offset",
+      "from": "FWD_Mid",
+      "dx": "-front_waist_dart / 2",
+      "dy": "0"
+    },
+    {
+      "id": "FWD_Apex",
+      "label": "Front Waist Dart Apex",
+      "type": "offset",
+      "from": "Bust_Point",
+      "dx": "0",
+      "dy": "2.2cm"
+    },
+    {
+      "id": "B_Grain_Top",
+      "label": "Back Grain Top",
+      "type": "offset",
+      "from": "Nape",
+      "dx": "back_bust_width * 0.32",
+      "dy": "5cm"
+    },
+    {
+      "id": "B_Grain_Bot",
+      "label": "Back Grain Bottom",
+      "type": "offset",
+      "from": "B_Grain_Top",
+      "dx": "0",
+      "dy": "26cm"
+    },
+    {
+      "id": "F_Grain_Top",
+      "label": "Front Grain Top",
+      "type": "offset",
+      "from": "CF_Neck",
+      "dx": "-front_bust_width * 0.30",
+      "dy": "4cm"
+    },
+    {
+      "id": "F_Grain_Bot",
+      "label": "Front Grain Bottom",
+      "type": "offset",
+      "from": "F_Grain_Top",
+      "dx": "0",
+      "dy": "24cm"
+    }
+  ],
+  "construction": [
+    {
+      "id": "back_neck_curve",
+      "label": "Back Neckline Curve",
+      "type": "cubic_bezier",
+      "p0": "Nape",
+      "p3": "BN_Side",
+      "handle1_angle": "0",
+      "handle1_length": "neck_width * 0.55",
+      "handle2_angle": "115",
+      "handle2_length": "1.2cm"
+    },
+    {
+      "id": "back_armhole_curve",
+      "label": "Back Armhole (Scye) Curve",
+      "type": "spline",
+      "points": ["B_Sh_Tip", "B_Cross", "B_Underarm"]
+    },
+    {
+      "id": "front_neck_curve",
+      "label": "Front Neckline Curve",
+      "type": "cubic_bezier",
+      "p0": "FN_Side",
+      "p3": "CF_Neck",
+      "handle1_angle": "82",
+      "handle1_length": "front_neck_drop * 0.58",
+      "handle2_angle": "180",
+      "handle2_length": "neck_width * 0.58"
+    },
+    {
+      "id": "front_armhole_curve",
+      "label": "Front Armhole (Scye) Curve",
+      "type": "spline",
+      "points": ["F_Sh_Tip", "F_Chest", "F_Underarm"]
+    },
+    {
+      "id": "scye_depth_guide",
+      "label": "Scye Depth Line",
+      "type": "line",
+      "from": "CB_Scye",
+      "to": "CF_Scye"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "bodice_back",
+      "name": "Bodice Back Block",
+      "cut_count": 2,
+      "seam_allowance_cm": 1.0,
+      "grainline": {
+        "from": "B_Grain_Top",
+        "to": "B_Grain_Bot",
+        "label": "BACK BODICE GRAINLINE"
+      },
+      "boundary": [
+        { "type": "curve_ref", "curve_id": "back_neck_curve", "reverse": false },
+        { "type": "line", "from": "BN_Side", "to": "B_Sh_Tip" },
+        { "type": "curve_ref", "curve_id": "back_armhole_curve", "reverse": false },
+        { "type": "line", "from": "B_Underarm", "to": "B_Side_Waist" },
+        { "type": "line", "from": "B_Side_Waist", "to": "BWD_R" },
+        { "type": "line", "from": "BWD_R", "to": "BWD_L" },
+        { "type": "line", "from": "BWD_L", "to": "CB_Waist" },
+        { "type": "line", "from": "CB_Waist", "to": "Nape" }
+      ],
+      "internal_lines": [
+        {
+          "id": "back_waist_dart_lines",
+          "label": "Back Waist Suppression Dart",
+          "type": "dart",
+          "points": ["BWD_L", "BWD_Apex", "BWD_R"]
+        },
+        {
+          "id": "back_scye_level",
+          "label": "Bust/Scye Balance Line",
+          "type": "internal",
+          "points": ["CB_Scye", "B_Underarm"]
+        }
+      ],
+      "notches": [
+        { "id": "nb_armhole", "point": "B_Cross", "edge_from": "B_Sh_Tip", "edge_to": "B_Underarm", "count": 2 },
+        { "id": "nb_waist_l", "point": "BWD_L", "edge_from": "BWD_L", "edge_to": "CB_Waist", "count": 1 },
+        { "id": "nb_waist_r", "point": "BWD_R", "edge_from": "B_Side_Waist", "edge_to": "BWD_R", "count": 1 }
+      ]
+    },
+    {
+      "id": "bodice_front",
+      "name": "Bodice Front Block",
+      "cut_count": 1,
+      "seam_allowance_cm": 1.0,
+      "grainline": {
+        "from": "F_Grain_Top",
+        "to": "F_Grain_Bot",
+        "label": "FRONT BODICE GRAINLINE"
+      },
+      "boundary": [
+        { "type": "line", "from": "CF_Neck", "to": "CF_Waist" },
+        { "type": "line", "from": "CF_Waist", "to": "FWD_R" },
+        { "type": "line", "from": "FWD_R", "to": "FWD_L" },
+        { "type": "line", "from": "FWD_L", "to": "F_Side_Waist" },
+        { "type": "line", "from": "F_Side_Waist", "to": "F_Underarm" },
+        { "type": "curve_ref", "curve_id": "front_armhole_curve", "reverse": true },
+        { "type": "line", "from": "F_Sh_Tip", "to": "BD_L" },
+        { "type": "line", "from": "BD_L", "to": "BD_R" },
+        { "type": "line", "from": "BD_R", "to": "FN_Side" },
+        { "type": "curve_ref", "curve_id": "front_neck_curve", "reverse": false }
+      ],
+      "internal_lines": [
+        {
+          "id": "front_bust_dart_lines",
+          "label": "Shoulder Bust Dart",
+          "type": "dart",
+          "points": ["BD_L", "Bust_Point", "BD_R"]
+        },
+        {
+          "id": "front_waist_dart_lines",
+          "label": "Front Waist Suppression Dart",
+          "type": "dart",
+          "points": ["FWD_L", "FWD_Apex", "FWD_R"]
+        },
+        {
+          "id": "front_scye_level",
+          "label": "Bust Balance Line",
+          "type": "internal",
+          "points": ["F_Underarm", "CF_Scye"]
+        }
+      ],
+      "notches": [
+        { "id": "nf_armhole", "point": "F_Chest", "edge_from": "F_Underarm", "edge_to": "F_Sh_Tip", "count": 1 },
+        { "id": "nf_bust_l", "point": "BD_L", "edge_from": "F_Sh_Tip", "edge_to": "BD_L", "count": 1 },
+        { "id": "nf_bust_r", "point": "BD_R", "edge_from": "BD_R", "edge_to": "FN_Side", "count": 1 },
+        { "id": "nf_waist_l", "point": "FWD_L", "edge_from": "FWD_L", "edge_to": "F_Side_Waist", "count": 1 },
+        { "id": "nf_waist_r", "point": "FWD_R", "edge_from": "CF_Waist", "edge_to": "FWD_R", "count": 1 }
+      ]
+    }
+  ]
+}
